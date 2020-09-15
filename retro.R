@@ -9,63 +9,7 @@ source("original-function1.0.r", encoding = 'UTF-8')
 source("frasyr_func_vpa.r")
 
 ## 太平洋ゴマサバ 
-#---- 2018年 ----
-caa = read.csv("caa_pgs2018.csv",  row.names = 1) #2018年のCAAは0を入れておく。NAはエラーになる
-waa = read.csv("waa_pgs2018.csv",  row.names = 1)
-maa = read.csv("maa_pgs2018.csv",  row.names = 1)
-cpue = read.csv("cpue_pgs2018.csv", row.names = 1) #2018年のCPUEはNAでよい
-dat2018 = data.handler(caa, waa, maa, cpue, M=0.4)
-
-## ----vpa-----------------------------------------------------------------
-# VPAによる資源量推定
-###step1
-res1.pgs <- vpa(dat = dat2018,
-                sel.f = NULL,
-                tf.year = 2013:2016,
-                fc.year = 2013:2017, # Fcurrentでどの範囲を参照するか
-                last.catch.zero = TRUE,
-                plus.group = TRUE,
-                Pope = TRUE,  # Popeの近似式を使う
-                tune = FALSE,
-                p.init = 1,
-                plot = TRUE,
-                plot.year = 2013:2017)
-
-sel.f = res1.pgs$saa$"2017"
-
-res1.pgs$faa$"2017" #チェック: 最近年のFの値
-res1.pgs$naa$"2017" #チェック: 最近年の年齢別資源尾数
-
-##step2
-res_vpa2018 = vpa(dat            = dat2018,
-                  sel.f           = sel.f,
-                  fc.year         = 2013:2017, # Fcurrentでどの範囲を参照するか
-                  term.F          = "max",  # 最終年の最高齢のFのみ推定
-                  Pope            = TRUE,  # Popeの近似式を使う
-                  last.catch.zero = TRUE,
-                  abund           = c("N", "SSB"),　
-                  min.age         = c(0, 2),　#2〜4歳資源量＝親魚量
-                  max.age         = c(0, 4),
-                  link            = c("id", "id"),
-                  base            = c(NA, NA),
-                  tune            = TRUE,
-                  plot            = TRUE,
-                  plot.year       = 2011:2017)
-warnings()
-
-# remove 2018 data
-res_vpa2018$input$dat$caa <- res_vpa2018$input$dat$caa[-ncol(res_vpa2018$input$dat$caa)]
-res_vpa2018$input$dat$maa <- res_vpa2018$input$dat$maa[-ncol(res_vpa2018$input$dat$maa)]
-res_vpa2018$input$dat$waa <- res_vpa2018$input$dat$waa[-ncol(res_vpa2018$input$dat$waa)]
-res_vpa2018$input$dat$M <- res_vpa2018$input$dat$M[-ncol(res_vpa2018$input$dat$M)]
-
-res_vpa2018$naa <- res_vpa2018$naa[-ncol(res_vpa2018$naa)]
-res_vpa2018$faa <- res_vpa2018$faa[-ncol(res_vpa2018$faa)]
-res_vpa2018$baa <- res_vpa2018$baa[-ncol(res_vpa2018$baa)]
-res_vpa2018$ssb <- res_vpa2018$ssb[-ncol(res_vpa2018$ssb)] 
-
-# save(res_vpa2018,file="res_vpa2018.rda")
-
+# rvpa ----------------------------------------------------------
 #---- 2019年 ----
 caa = read.csv("caa_pgs2019.csv",  row.names = 1) #2019年のCAAは0を入れておく。NAはエラーになる
 waa = read.csv("waa_pgs2019.csv",  row.names = 1)
@@ -137,6 +81,20 @@ cpue0 = read.csv("cpue_pgs2019_rawegg.csv", row.names = 1)
 cpue1 = read.csv("cpue_pgs2019_nominal.csv", row.names = 1)
 cpue2 = read.csv("cpue_pgs2019_vast_nochub.csv", row.names = 1)
 cpue3 = read.csv("cpue_pgs2019_vast_chub.csv", row.names = 1)
+
+#2018年までの資源量を使ってレトロ解析を行うので，2019年のデータを除去しとく
+for(i in 0:3){
+  data = get(paste0("cpue", i))
+  assign(paste0("cpue", i),
+         data[, -ncol(data)])
+}
+
+tag = c("caa", "waa", "maa")
+for(i in tag){
+  data = get(paste0(i))
+  assign(paste0(i),
+         data[, -ncol(data)])
+}
 
 dat0 = data.handler(caa, waa, maa, cpue0, M = 0.4)
 dat1 = data.handler(caa, waa, maa, cpue1, M = 0.4)
@@ -244,7 +202,7 @@ vpa_retro_sel_update = function(dat, retro_year = 5) {
   res0_step2 = res_vpa2019
   res0_step2$input$dat = dat
   # res0_step2$input$tf.year = 2014:2017 #year
-  res0_step2$input$tf.year = 2014:2017 #year
+  res0_step2$input$tf.year = 2013:2017 #year
   res0_step2$input$sel.f = NULL
   res0_step2$input$sel.update = TRUE
   res0_step2 = do.call(vpa, res0_step2$input)
