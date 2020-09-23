@@ -82,19 +82,19 @@ cpue1 = read.csv("cpue_pgs2019_nominal.csv", row.names = 1)
 cpue2 = read.csv("cpue_pgs2019_vast_nochub.csv", row.names = 1)
 cpue3 = read.csv("cpue_pgs2019_vast_chub.csv", row.names = 1)
 
-#2018年までの資源量を使ってレトロ解析を行うので，2019年のデータを除去しとく
-for(i in 0:3){
-  data = get(paste0("cpue", i))
-  assign(paste0("cpue", i),
-         data[, -ncol(data)])
-}
-
-tag = c("caa", "waa", "maa")
-for(i in tag){
-  data = get(paste0(i))
-  assign(paste0(i),
-         data[, -ncol(data)])
-}
+# #2018年までの資源量を使ってレトロ解析を行うので，2019年のデータを除去しとく
+# for(i in 0:3){
+#   data = get(paste0("cpue", i))
+#   assign(paste0("cpue", i),
+#          data[, -ncol(data)])
+# }
+# 
+# tag = c("caa", "waa", "maa")
+# for(i in tag){
+#   data = get(paste0(i))
+#   assign(paste0(i),
+#          data[, -ncol(data)])
+# }
 
 dat0 = data.handler(caa, waa, maa, cpue0, M = 0.4)
 dat1 = data.handler(caa, waa, maa, cpue1, M = 0.4)
@@ -147,9 +147,9 @@ dat3 = data.handler(caa, waa, maa, cpue3, M = 0.4)
 # res_dat3$res$sigma
 # 
 get_tbl = function(Res, tune = "2steps") {
-  mohn_var = c("N2","B2","R2","F","SSB2","SSB")
+  mohn_var = c("N2","B2","R2","F","SSB2")
   mohns = Res$retro$mohn[mohn_var]
-  names(mohns) = c("mohn_N","mohn_B","mohn_R","mohn_F","mohn_SSB","mohn_SSB2")
+  names(mohns) = c("mohn_N","mohn_B","mohn_R","mohn_F","mohn_SSB")
   model_tbl = tibble(tune=tune,tune_start = colnames(Res$res$input$dat$index)[!is.na(Res$res$input$dat$index[2,])][1]) %>%
     mutate(term_f = Res$res$term.f, R2018 = Res$res$naa[1,"2018"],B2018 = colSums(Res$res$baa)["2018"]/1000,
            SSB2018 = colSums(Res$res$ssb)["2018"]/1000,SSB2019 = colSums(Res$res$ssb)["2019"]/1000,sigma = mean(Res$res$sigma))
