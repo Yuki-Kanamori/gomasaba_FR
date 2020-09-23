@@ -108,92 +108,92 @@ dat2$index[2,as.character(2005:2006)] <- NA
 dat3$index[2,as.character(2005:2006)] <- NA
 
 # 
-vpa_retro_2step = function(dat, retro_year = 5) {
-  res0_step1 =  res1.pgs
-  res0_step1$input$dat = dat
-  res0_step1 = do.call(vpa, res0_step1$input)
-  res0_step2 = res_vpa2019
-  res0_step2$input$dat = dat
-  res0_step2$input$sel.f = rev(res0_step1$saa)[,2]
-  res0_step2 = do.call(vpa, res0_step2$input)
-  retro_step1 = retro.est3(res0_step1,n=retro_year)
-  sel_mat = NULL
-  for ( i in 1:retro_year ) {
-    sel_mat = cbind(sel_mat,rev(retro_step1$Res[[i]]$saa)[,2])
-  }
-  retro_step2 = retro.est3(res0_step2, n = retro_year, sel.mat = sel_mat)
-  return(list(res=res0_step2, retro = retro_step2))
-}
-
-res_dat0 = vpa_retro_2step(dat0)
-colSums(res_dat0$res$ssb)
-res_dat0$retro$mohn
-res_dat0$res$sigma
-
-res_dat1 = vpa_retro_2step(dat1)
-colSums(res_dat1$res$ssb)
-res_dat1$retro$mohn
-res_dat1$res$sigma
-
-res_dat2 = vpa_retro_2step(dat2)
-colSums(res_dat2$res$ssb)
-res_dat2$retro$mohn
-res_dat2$res$sigma
-
-res_dat3 = vpa_retro_2step(dat3)
-names(res_dat3$res)
-colSums(res_dat2$res$ssb)
-res_dat3$retro$mohn
-res_dat3$res$sigma
-
-get_tbl = function(Res, tune = "2steps") {
-  mohn_var = c("N2","B2","R2","F","SSB2","SSB")
-  mohns = Res$retro$mohn[mohn_var]
-  names(mohns) = c("mohn_N","mohn_B","mohn_R","mohn_F","mohn_SSB","mohn_SSB2")
-  model_tbl = tibble(tune=tune,tune_start = colnames(Res$res$input$dat$index)[!is.na(Res$res$input$dat$index[2,])][1]) %>%
-    mutate(term_f = Res$res$term.f, R2018 = Res$res$naa[1,"2018"],B2018 = colSums(Res$res$baa)["2018"]/1000,
-           SSB2018 = colSums(Res$res$ssb)["2018"]/1000,SSB2019 = colSums(Res$res$ssb)["2019"]/1000,sigma = mean(Res$res$sigma))
-  mohn_tbl = tibble(mohn = mohns,var=names(mohn)) %>% spread(key=var,value=mohn)
-  return(bind_cols(model_tbl, mohn_tbl))
-}
-
-summary_table = bind_rows(get_tbl(res_dat0),get_tbl(res_dat1),get_tbl(res_dat2),get_tbl(res_dat3)) %>%
-  mutate(Index_type = c("Egg_abundance","Nominal","VAST_noChub","VAST_Chub"))
-
-View(summary_table)
-
-#### 2005~2006を使う ----
-dat0 = data.handler(caa, waa, maa, cpue0, M=0.4)
-dat1 = data.handler(caa, waa, maa, cpue1, M=0.4)
-dat2 = data.handler(caa, waa, maa, cpue2, M=0.4)
-dat3 = data.handler(caa, waa, maa, cpue3, M=0.4)
-
-res_dat0 = vpa_retro_2step(dat0)
-colSums(res_dat0$res$ssb)
-res_dat0$retro$mohn
-res_dat0$res$sigma
-
-res_dat1 = vpa_retro_2step(dat1)
-colSums(res_dat1$res$ssb)
-res_dat1$retro$mohn
-res_dat1$res$sigma
-
-res_dat2 = vpa_retro_2step(dat2)
-colSums(res_dat2$res$ssb)
-res_dat2$retro$mohn
-res_dat2$res$sigma
-
-res_dat3 = vpa_retro_2step(dat3)
-colSums(res_dat2$res$ssb)
-res_dat3$retro$mohn
-res_dat3$res$sigma
-
-summary_table2 = bind_rows(get_tbl(res_dat0),get_tbl(res_dat1),get_tbl(res_dat2),get_tbl(res_dat3)) %>%
-  mutate(Index_type = c("Egg_abundance","Nominal","VAST_noChub","VAST_Chub"))
-
-summary_table = bind_rows(summary_table, summary_table2)
-
-View(summary_table)
+# vpa_retro_2step = function(dat, retro_year = 5) {
+#   res0_step1 =  res1.pgs
+#   res0_step1$input$dat = dat
+#   res0_step1 = do.call(vpa, res0_step1$input)
+#   res0_step2 = res_vpa2019
+#   res0_step2$input$dat = dat
+#   res0_step2$input$sel.f = rev(res0_step1$saa)[,2]
+#   res0_step2 = do.call(vpa, res0_step2$input)
+#   retro_step1 = retro.est3(res0_step1,n=retro_year)
+#   sel_mat = NULL
+#   for ( i in 1:retro_year ) {
+#     sel_mat = cbind(sel_mat,rev(retro_step1$Res[[i]]$saa)[,2])
+#   }
+#   retro_step2 = retro.est3(res0_step2, n = retro_year, sel.mat = sel_mat)
+#   return(list(res=res0_step2, retro = retro_step2))
+# }
+# 
+# res_dat0 = vpa_retro_2step(dat0)
+# colSums(res_dat0$res$ssb)
+# res_dat0$retro$mohn
+# res_dat0$res$sigma
+# 
+# res_dat1 = vpa_retro_2step(dat1)
+# colSums(res_dat1$res$ssb)
+# res_dat1$retro$mohn
+# res_dat1$res$sigma
+# 
+# res_dat2 = vpa_retro_2step(dat2)
+# colSums(res_dat2$res$ssb)
+# res_dat2$retro$mohn
+# res_dat2$res$sigma
+# 
+# res_dat3 = vpa_retro_2step(dat3)
+# names(res_dat3$res)
+# colSums(res_dat2$res$ssb)
+# res_dat3$retro$mohn
+# res_dat3$res$sigma
+# 
+# get_tbl = function(Res, tune = "2steps") {
+#   mohn_var = c("N2","B2","R2","F","SSB2","SSB")
+#   mohns = Res$retro$mohn[mohn_var]
+#   names(mohns) = c("mohn_N","mohn_B","mohn_R","mohn_F","mohn_SSB","mohn_SSB2")
+#   model_tbl = tibble(tune=tune,tune_start = colnames(Res$res$input$dat$index)[!is.na(Res$res$input$dat$index[2,])][1]) %>%
+#     mutate(term_f = Res$res$term.f, R2018 = Res$res$naa[1,"2018"],B2018 = colSums(Res$res$baa)["2018"]/1000,
+#            SSB2018 = colSums(Res$res$ssb)["2018"]/1000,SSB2019 = colSums(Res$res$ssb)["2019"]/1000,sigma = mean(Res$res$sigma))
+#   mohn_tbl = tibble(mohn = mohns,var=names(mohn)) %>% spread(key=var,value=mohn)
+#   return(bind_cols(model_tbl, mohn_tbl))
+# }
+# 
+# summary_table = bind_rows(get_tbl(res_dat0),get_tbl(res_dat1),get_tbl(res_dat2),get_tbl(res_dat3)) %>%
+#   mutate(Index_type = c("Egg_abundance","Nominal","VAST_noChub","VAST_Chub"))
+# 
+# View(summary_table)
+# 
+# #### 2005~2006を使う ----
+# dat0 = data.handler(caa, waa, maa, cpue0, M=0.4)
+# dat1 = data.handler(caa, waa, maa, cpue1, M=0.4)
+# dat2 = data.handler(caa, waa, maa, cpue2, M=0.4)
+# dat3 = data.handler(caa, waa, maa, cpue3, M=0.4)
+# 
+# res_dat0 = vpa_retro_2step(dat0)
+# colSums(res_dat0$res$ssb)
+# res_dat0$retro$mohn
+# res_dat0$res$sigma
+# 
+# res_dat1 = vpa_retro_2step(dat1)
+# colSums(res_dat1$res$ssb)
+# res_dat1$retro$mohn
+# res_dat1$res$sigma
+# 
+# res_dat2 = vpa_retro_2step(dat2)
+# colSums(res_dat2$res$ssb)
+# res_dat2$retro$mohn
+# res_dat2$res$sigma
+# 
+# res_dat3 = vpa_retro_2step(dat3)
+# colSums(res_dat2$res$ssb)
+# res_dat3$retro$mohn
+# res_dat3$res$sigma
+# 
+# summary_table2 = bind_rows(get_tbl(res_dat0),get_tbl(res_dat1),get_tbl(res_dat2),get_tbl(res_dat3)) %>%
+#   mutate(Index_type = c("Egg_abundance","Nominal","VAST_noChub","VAST_Chub"))
+# 
+# summary_table = bind_rows(summary_table, summary_table2)
+# 
+# View(summary_table)
 
 ### sel.update = TRUE ----
 
