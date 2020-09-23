@@ -1,5 +1,5 @@
 # require(devtools)
-# devtools::install_github("ichimomo/frasyr") 
+# devtools::install_github("ichimomo/frasyr")
 require(frasyr)
 require(tidyverse)
 require(gridExtra)
@@ -9,7 +9,7 @@ setwd("C:/Users/00007802/Documents/rvpa")
 source("original-function1.0.r", encoding = 'UTF-8')
 source("frasyr_func_vpa.r")
 
-## 太平洋ゴマサバ 
+## 太平洋ゴマサバ
 # rvpa ----------------------------------------------------------
 #---- 2019年 ----
 caa = read.csv("caa_pgs2019.csv",  row.names = 1) #2019年のCAAは0を入れておく。NAはエラーになる
@@ -61,14 +61,14 @@ if (0) {
   res_vpa2019$input$dat$maa <- res_vpa2019$input$dat$maa[-ncol(res_vpa2019$input$dat$maa)]
   res_vpa2019$input$dat$waa <- res_vpa2019$input$dat$waa[-ncol(res_vpa2019$input$dat$waa)]
   res_vpa2019$input$dat$M <- res_vpa2019$input$dat$M[-ncol(res_vpa2019$input$dat$M)]
-  
+
   res_vpa2019$naa <- res_vpa2019$naa[-ncol(res_vpa2019$naa)]
   res_vpa2019$faa <- res_vpa2019$faa[-ncol(res_vpa2019$faa)]
   res_vpa2019$baa <- res_vpa2019$baa[-ncol(res_vpa2019$baa)]
-  res_vpa2019$ssb <- res_vpa2019$ssb[-ncol(res_vpa2019$ssb)] 
-  
+  res_vpa2019$ssb <- res_vpa2019$ssb[-ncol(res_vpa2019$ssb)]
+
   save(res_vpa2019,file="res_vpa2019.rda")
-  
+
   # 2019年のweight at ageは将来予測で使うため、別に保存しておく
   waa2019 <- tibble("2019"=dat2019$waa$"2019")
 }
@@ -91,7 +91,7 @@ cpue3 = read.csv("cpue_pgs2019_vast_chub.csv", row.names = 1)
 #   assign(paste0("cpue", i),
 #          data[, -ncol(data)])
 # }
-# 
+#
 # tag = c("caa", "waa", "maa")
 # for(i in tag){
 #   data = get(paste0(i))
@@ -111,7 +111,7 @@ dat3 = data.handler(caa, waa, maa, cpue3, M = 0.4)
 # dat2$index[2,as.character(2005:2006)] <- NA
 # dat3$index[2,as.character(2005:2006)] <- NA
 
-# 
+#
 # vpa_retro_2step = function(dat, retro_year = 5) {
 #   res0_step1 =  res1.pgs
 #   res0_step1$input$dat = dat
@@ -128,28 +128,28 @@ dat3 = data.handler(caa, waa, maa, cpue3, M = 0.4)
 #   retro_step2 = retro.est3(res0_step2, n = retro_year, sel.mat = sel_mat)
 #   return(list(res=res0_step2, retro = retro_step2))
 # }
-# 
+#
 # res_dat0 = vpa_retro_2step(dat0)
 # colSums(res_dat0$res$ssb)
 # res_dat0$retro$mohn
 # res_dat0$res$sigma
-# 
+#
 # res_dat1 = vpa_retro_2step(dat1)
 # colSums(res_dat1$res$ssb)
 # res_dat1$retro$mohn
 # res_dat1$res$sigma
-# 
+#
 # res_dat2 = vpa_retro_2step(dat2)
 # colSums(res_dat2$res$ssb)
 # res_dat2$retro$mohn
 # res_dat2$res$sigma
-# 
+#
 # res_dat3 = vpa_retro_2step(dat3)
 # names(res_dat3$res)
 # colSums(res_dat2$res$ssb)
 # res_dat3$retro$mohn
 # res_dat3$res$sigma
-# 
+#
 get_tbl = function(Res, tune = "2steps") {
   # mohn_var = c("N2","B2","R2","F","SSB2","SSB")
   mohn_var = c("N2","B2","R2","F","SSB2")
@@ -164,40 +164,40 @@ get_tbl = function(Res, tune = "2steps") {
 
 # summary_table = bind_rows(get_tbl(res_dat0),get_tbl(res_dat1),get_tbl(res_dat2),get_tbl(res_dat3)) %>%
 #   mutate(Index_type = c("Egg_abundance","Nominal","VAST_noChub","VAST_Chub"))
-# 
+#
 # View(summary_table)
-# 
+#
 # #### 2005~2006を使う ----
 # dat0 = data.handler(caa, waa, maa, cpue0, M=0.4)
 # dat1 = data.handler(caa, waa, maa, cpue1, M=0.4)
 # dat2 = data.handler(caa, waa, maa, cpue2, M=0.4)
 # dat3 = data.handler(caa, waa, maa, cpue3, M=0.4)
-# 
+#
 # res_dat0 = vpa_retro_2step(dat0)
 # colSums(res_dat0$res$ssb)
 # res_dat0$retro$mohn
 # res_dat0$res$sigma
-# 
+#
 # res_dat1 = vpa_retro_2step(dat1)
 # colSums(res_dat1$res$ssb)
 # res_dat1$retro$mohn
 # res_dat1$res$sigma
-# 
+#
 # res_dat2 = vpa_retro_2step(dat2)
 # colSums(res_dat2$res$ssb)
 # res_dat2$retro$mohn
 # res_dat2$res$sigma
-# 
+#
 # res_dat3 = vpa_retro_2step(dat3)
 # colSums(res_dat2$res$ssb)
 # res_dat3$retro$mohn
 # res_dat3$res$sigma
-# 
+#
 # summary_table2 = bind_rows(get_tbl(res_dat0),get_tbl(res_dat1),get_tbl(res_dat2),get_tbl(res_dat3)) %>%
 #   mutate(Index_type = c("Egg_abundance","Nominal","VAST_noChub","VAST_Chub"))
-# 
+#
 # summary_table = bind_rows(summary_table, summary_table2)
-# 
+#
 # View(summary_table)
 
 ### sel.update = TRUE ----
@@ -256,9 +256,11 @@ summary_table = summary_table3
 
 # summary_table = bind_rows(summary_table, summary_table3)
 
-summary_table = summary_table %>% mutate(
-  sel_def = "max"
-)
+# summary_table = bind_rows(summary_table, summary_table3)
+#
+# summary_table = summary_table %>% mutate(
+#   sel_def = "max"
+# )
 
 #参照年を変更
 # vpa_retro_sel_update = function(dat, retro_year = 5) {
@@ -306,73 +308,80 @@ summary_table4 = bind_rows(get_tbl(res_dat0, tune = "sel_update"),
   mutate(Index_type = c("Egg_abundance","Nominal","VAST_noChub","VAST_Chub"),
          tf_year = "2015-2017")
 
-summary_table = bind_rows(summary_table, summary_table4)
+summary_table = bind_rows(summary_table3, summary_table4)
 
-summary_table = summary_table %>% mutate(
-  sel_def = "max"
-)
+# summary_table = summary_table %>% mutate(
+#   sel_def = "max"
+# )
 write.csv(summary_table, "summary_table.csv")
+
+
+
+
+
+
+
 
 
 # fig -----------------------------------------------------------
 DF0 = NULL; DF1 = NULL; DF2 = NULL; DF3 = NULL; DF4 = NULL; DF5 = NULL; DF6 = NULL
 for(j in 1:5){
-  data = res_dat0
-  
+  data = res_dat01
+
   df0 = data_frame(colSums(data$res$wcaa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "wcaa", index = "Raw")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "wcaa", index = "Nominal")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$naa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "naa", index = "Raw")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "naa", index = "Nominal")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$faa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "faa", index = "Raw")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "faa", index = "Nominal")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$baa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "baa", index = "Raw")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "baa", index = "Nominal")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$ssb))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "ssb", index = "Raw")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "ssb", index = "Nominal")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$saa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "saa", index = "Raw")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "saa", index = "Nominal")
   DF0 = rbind(DF0, df0)
-  
+
   df1 = data_frame(colSums(data$retro$Res[[j]]$wcaa))
   colnames(df1) = "value"
-  df1 = df1 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "wcaa", index = "Raw")
+  df1 = df1 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "wcaa", index = "Nominal")
   DF1 = rbind(DF1, df1)
-  
-  
+
+
   df2 = data_frame(colSums(data$retro$Res[[j]]$naa))
   colnames(df2) = "value"
-  df2 = df2 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "naa", index = "Raw")
+  df2 = df2 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "naa", index = "Nominal")
   DF2 = rbind(DF2, df2)
-  
+
   df3 = data_frame(colSums(data$retro$Res[[j]]$faa))
   colnames(df3) = "value"
-  df3 = df3 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "faa", index = "Raw")
+  df3 = df3 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "faa", index = "Nominal")
   DF3 = rbind(DF3, df3)
-  
+
   df4 = data_frame(colSums(data$retro$Res[[j]]$baa))
   colnames(df4) = "value"
-  df4 = df4 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "baa", index = "Raw")
+  df4 = df4 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "baa", index = "Nominal")
   DF4 = rbind(DF4, df4)
-  
+
   df5 = data_frame(colSums(data$retro$Res[[j]]$ssb))
   colnames(df5) = "value"
-  df5 = df5 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "ssb", index = "Raw")
+  df5 = df5 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "ssb", index = "Nominal")
   DF5 = rbind(DF5, df5)
-  
+
   df6 = data_frame(colSums(data$retro$Res[[j]]$saa))
   colnames(df6) = "value"
-  df6 = df6 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "saa", index = "Raw")
+  df6 = df6 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "saa", index = "Nominal")
   DF6 = rbind(DF6, df6)
 }
 retro_dat0_0 = DF0
@@ -385,66 +394,66 @@ retro_saa_dat0 = DF6
 
 DF0 = NULL; DF1 = NULL; DF2 = NULL; DF3 = NULL; DF4 = NULL; DF5 = NULL; DF6 = NULL
 for(j in 1:5){
-  data = res_dat2
-  
+  data = res_dat21
+
   df0 = data_frame(colSums(data$res$wcaa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "wcaa", index = "Chub-")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "wcaa", index = "Chub-")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$naa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "naa", index = "Chub-")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "naa", index = "Chub-")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$faa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "faa", index = "Chub-")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "faa", index = "Chub-")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$baa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "baa", index = "Chub-")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "baa", index = "Chub-")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$ssb))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "ssb", index = "Chub-")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "ssb", index = "Chub-")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$saa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "saa", index = "Chub-")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "saa", index = "Chub-")
   DF0 = rbind(DF0, df0)
-  
+
   df1 = data_frame(colSums(data$retro$Res[[j]]$wcaa))
   colnames(df1) = "value"
-  df1 = df1 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "wcaa", index = "Chub-")
+  df1 = df1 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "wcaa", index = "Chub-")
   DF1 = rbind(DF1, df1)
-  
+
   df1 = data_frame(colSums(data$retro$Res[[j]]$wcaa))
   colnames(df1) = "value"
-  df1 = df1 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "wcaa", index = "Chub-")
+  df1 = df1 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "wcaa", index = "Chub-")
   DF1 = rbind(DF1, df1)
-  
+
   df2 = data_frame(colSums(data$retro$Res[[j]]$naa))
   colnames(df2) = "value"
-  df2 = df2 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "naa", index = "Chub-")
+  df2 = df2 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "naa", index = "Chub-")
   DF2 = rbind(DF2, df2)
-  
+
   df3 = data_frame(colSums(data$retro$Res[[j]]$faa))
   colnames(df3) = "value"
-  df3 = df3 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "faa", index = "Chub-")
+  df3 = df3 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "faa", index = "Chub-")
   DF3 = rbind(DF3, df3)
-  
+
   df4 = data_frame(colSums(data$retro$Res[[j]]$baa))
   colnames(df4) = "value"
-  df4 = df4 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "baa", index = "Chub-")
+  df4 = df4 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "baa", index = "Chub-")
   DF4 = rbind(DF4, df4)
-  
+
   df5 = data_frame(colSums(data$retro$Res[[j]]$ssb))
   colnames(df5) = "value"
-  df5 = df5 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "ssb", index = "Chub-")
+  df5 = df5 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "ssb", index = "Chub-")
   DF5 = rbind(DF5, df5)
-  
+
   df6 = data_frame(colSums(data$retro$Res[[j]]$saa))
   colnames(df6) = "value"
-  df6 = df6 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "saa", index = "Chub-")
+  df6 = df6 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "saa", index = "Chub-")
   DF6 = rbind(DF6, df6)
 }
 retro_dat2_0 = DF0
@@ -457,61 +466,61 @@ retro_saa_dat2 = DF6
 
 DF0 = NULL; DF1 = NULL; DF2 = NULL; DF3 = NULL; DF4 = NULL; DF5 = NULL; DF6 = NULL
 for(j in 1:5){
-  data = res_dat3
-  
+  data = res_dat31
+
   df0 = data_frame(colSums(data$res$wcaa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "wcaa", index = "Chub+")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "wcaa", index = "Chub+")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$naa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "naa", index = "Chub+")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "naa", index = "Chub+")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$faa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "faa", index = "Chub+")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "faa", index = "Chub+")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$baa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "baa", index = "Chub+")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "baa", index = "Chub+")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$ssb))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "ssb", index = "Chub+")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "ssb", index = "Chub+")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$saa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "saa", index = "Chub+")
+  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "saa", index = "Chub+")
   DF0 = rbind(DF0, df0)
-  
+
   df1 = data_frame(colSums(data$retro$Res[[j]]$wcaa))
   colnames(df1) = "value"
-  df1 = df1 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "wcaa", index = "Chub+")
+  df1 = df1 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "wcaa", index = "Chub+")
   DF1 = rbind(DF1, df1)
-  
+
   df2 = data_frame(colSums(data$retro$Res[[j]]$naa))
   colnames(df2) = "value"
-  df2 = df2 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "naa", index = "Chub+")
+  df2 = df2 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "naa", index = "Chub+")
   DF2 = rbind(DF2, df2)
-  
+
   df3 = data_frame(colSums(data$retro$Res[[j]]$faa))
   colnames(df3) = "value"
-  df3 = df3 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "faa", index = "Chub+")
+  df3 = df3 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "faa", index = "Chub+")
   DF3 = rbind(DF3, df3)
-  
+
   df4 = data_frame(colSums(data$retro$Res[[j]]$baa))
   colnames(df4) = "value"
-  df4 = df4 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "baa", index = "Chub+")
+  df4 = df4 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "baa", index = "Chub+")
   DF4 = rbind(DF4, df4)
-  
+
   df5 = data_frame(colSums(data$retro$Res[[j]]$ssb))
   colnames(df5) = "value"
-  df5 = df5 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "ssb", index = "Chub+")
+  df5 = df5 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "ssb", index = "Chub+")
   DF5 = rbind(DF5, df5)
-  
+
   df6 = data_frame(colSums(data$retro$Res[[j]]$saa))
   colnames(df6) = "value"
-  df6 = df6 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "saa", index = "Chub+")
+  df6 = df6 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "saa", index = "Chub+")
   DF6 = rbind(DF6, df6)
 }
 retro_dat3_0 = DF0
@@ -532,18 +541,24 @@ retro = rbind(retro_wcaa_dat0, retro_wcaa_dat2, retro_wcaa_dat3,
 retro = retro %>% filter(value != 0)
 head(retro)
 
-retro$index = factor(retro$index, levels = c("Raw", "Chub-", "Chub+"))
-retro$type = ifelse(retro$type == "wcaa", "WCAA", ifelse(retro$type == "naa", "NAA", ifelse(retro$type == "faa", "FAA", ifelse(retro$type == "baa", "BAA", ifelse(retro$type == "ssb", "SSB", "SAA")))))
-write.csv(retro, "retro_16-17.csv")
+retro$index = factor(retro$index, levels = c("Nominal", "Chub-", "Chub+"))
+retro$type = ifelse(retro$type == "wcaa", "WCAA", ifelse(retro$type == "naa", "Numbers", ifelse(retro$type == "faa", "FAA", ifelse(retro$type == "baa", "Biomass", ifelse(retro$type == "ssb", "SSB", "SAA")))))
+write.csv(retro, "retro_13-17.csv")
 
-g = ggplot(retro %>% filter(type != "WCAA"), aes(x = year, y = value, colour = as.factor(ret_yr)))
+select = c("Biomass", "Numbers", "SSB")
+fig_retro = retro %>% filter(type %in% select)
+unique(fig_retro$type)
+levels(fig_retro$type)
+fig_retro$type = factor(fig_retro$type, levels = c("Numbers", "Biomass", "SSB"))
+
+g = ggplot(fig_retro, aes(x = year, y = value, colour = as.factor(ret_yr)))
 cbPalette = c("gray50", "blue", "cyan", "green", "orange", "red")
 pd = position_dodge(.3)
 #c("black", "blue", "cyan", "green", "yellow", "orange", "red", "darkred")
 p = geom_point(position = pd)
 l = geom_line()
 f = facet_grid(type ~ index, scales = "free")
-lb = labs(x = "Year", y = "", color = NULL, title = "tf.year = 2016:2017")
+lb = labs(x = "Year", y = "", color = NULL, title = "")
 th = theme(#legend.position = c(0.18, 0.8),
   #legend.position = c(0.7, 0.9),
   legend.key = element_blank(),
@@ -556,11 +571,14 @@ th = theme(#legend.position = c(0.18, 0.8),
   legend.text = element_text(size = rel(1.5)),
   strip.text = element_text(size = rel(1.3)), #ファセットのタイトル
   plot.title = element_text(size = rel(1.5))) #タイトル
-g+p+l+f+lb+theme_bw()+th+scale_x_continuous(breaks = seq(1995, 2019, 5))+scale_colour_manual(values = cbPalette)
+g+p+l+f+lb+theme_bw()+th+scale_x_continuous(breaks = seq(1995, 2018, 5))+scale_colour_manual(values = cbPalette)
 
 
 
 
+# ---------------------------------------------------------------
+# こっから下は使っていないコード -----------------------------------------------
+# ---------------------------------------------------------------
 
 
 ### sel.def = "mean" ----
@@ -716,4 +734,3 @@ colSums(base0$ssb)
 View(summary_table)
 
 write.csv(summary_table, file = "pgm_summary.csv")
-
