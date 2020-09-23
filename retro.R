@@ -245,6 +245,19 @@ colSums(res_dat2$res$ssb)
 res_dat3$retro$mohn[statname]
 res_dat3$res$sigma
 
+# save R object for ABC calculation
+
+res_vpa = res_dat0$res
+save(res_vpa,file="res_vpa_raw.rda")
+res_vpa = res_dat1$res
+save(res_vpa,file="res_vpa_nominal.rda")
+res_vpa = res_dat2$res
+save(res_vpa,file="res_vpa_noChub.rda")
+res_vpa = res_dat3$res
+save(res_vpa,file="res_vpa_Chub.rda")
+
+
+
 summary_table3 = bind_rows(get_tbl(res_dat0, tune = "sel_update"),
                            get_tbl(res_dat1, tune = "sel_update"),
                            get_tbl(res_dat2, tune = "sel_update"),
