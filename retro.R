@@ -213,33 +213,33 @@ vpa_retro_sel_update = function(dat, retro_year = 5) {
 }
 
 #raw
-res_dat0 = vpa_retro_sel_update(dat0)
-colSums(res_dat0$res$ssb)
-res_dat0$retro$mohn
-res_dat0$res$sigma
+res_dat01 = vpa_retro_sel_update(dat0)
+colSums(res_dat01$res$ssb)
+res_dat01$retro$mohn
+res_dat01$res$sigma
 
 #nominal
-res_dat1 = vpa_retro_sel_update(dat1)
-colSums(res_dat1$res$ssb)
-res_dat1$retro$mohn
-res_dat1$res$sigma
+res_dat11 = vpa_retro_sel_update(dat1)
+colSums(res_dat11$res$ssb)
+res_dat11$retro$mohn
+res_dat11$res$sigma
 
 #chub-
-res_dat2 = vpa_retro_sel_update(dat2)
-colSums(res_dat2$res$ssb)
-res_dat2$retro$mohn
-res_dat2$res$sigma
+res_dat21 = vpa_retro_sel_update(dat2)
+colSums(res_dat21$res$ssb)
+res_dat21$retro$mohn
+res_dat21$res$sigma
 
 #chub+
-res_dat3 = vpa_retro_sel_update(dat3)
-colSums(res_dat2$res$ssb)
-res_dat3$retro$mohn
-res_dat3$res$sigma
+res_dat31 = vpa_retro_sel_update(dat3)
+colSums(res_dat31$res$ssb)
+res_dat31$retro$mohn
+res_dat31$res$sigma
 
-summary_table3 = bind_rows(get_tbl(res_dat0, tune = "sel_update"),
-                           get_tbl(res_dat1, tune = "sel_update"),
-                           get_tbl(res_dat2, tune = "sel_update"),
-                           get_tbl(res_dat3, tune = "sel_update")) %>%
+summary_table3 = bind_rows(get_tbl(res_dat01, tune = "sel_update"),
+                           get_tbl(res_dat11, tune = "sel_update"),
+                           get_tbl(res_dat21, tune = "sel_update"),
+                           get_tbl(res_dat31, tune = "sel_update")) %>%
   mutate(Index_type = c("Egg_abundance","Nominal","VAST_noChub","VAST_Chub"), tf_yr = "2013:2017", sel_def = "max")
 
 
@@ -302,10 +302,17 @@ summary_table = bind_rows(summary_table3, summary_table4)
 write.csv(summary_table, "summary_table.csv")
 
 
+
+
+
+
+
+
+
 # fig -----------------------------------------------------------
 DF0 = NULL; DF1 = NULL; DF2 = NULL; DF3 = NULL; DF4 = NULL; DF5 = NULL; DF6 = NULL
 for(j in 1:5){
-  data = res_dat0
+  data = res_dat01
   
   df0 = data_frame(colSums(data$res$wcaa))
   colnames(df0) = "value"
@@ -373,7 +380,7 @@ retro_saa_dat0 = DF6
 
 DF0 = NULL; DF1 = NULL; DF2 = NULL; DF3 = NULL; DF4 = NULL; DF5 = NULL; DF6 = NULL
 for(j in 1:5){
-  data = res_dat2
+  data = res_dat21
   
   df0 = data_frame(colSums(data$res$wcaa))
   colnames(df0) = "value"
@@ -445,7 +452,7 @@ retro_saa_dat2 = DF6
 
 DF0 = NULL; DF1 = NULL; DF2 = NULL; DF3 = NULL; DF4 = NULL; DF5 = NULL; DF6 = NULL
 for(j in 1:5){
-  data = res_dat3
+  data = res_dat31
   
   df0 = data_frame(colSums(data$res$wcaa))
   colnames(df0) = "value"
