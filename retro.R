@@ -101,11 +101,11 @@ dat1 = data.handler(caa, waa, maa, cpue1, M = 0.4)
 dat2 = data.handler(caa, waa, maa, cpue2, M = 0.4)
 dat3 = data.handler(caa, waa, maa, cpue3, M = 0.4)
 
-# 2005 & 2006 を除く
-dat0$index[2,as.character(2005:2006)] <- NA
-dat1$index[2,as.character(2005:2006)] <- NA
-dat2$index[2,as.character(2005:2006)] <- NA
-dat3$index[2,as.character(2005:2006)] <- NA
+# # 2005 & 2006 を除く
+# dat0$index[2,as.character(2005:2006)] <- NA
+# dat1$index[2,as.character(2005:2006)] <- NA
+# dat2$index[2,as.character(2005:2006)] <- NA
+# dat3$index[2,as.character(2005:2006)] <- NA
 
 # 
 # vpa_retro_2step = function(dat, retro_year = 5) {
