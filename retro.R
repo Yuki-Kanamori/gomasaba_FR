@@ -252,7 +252,8 @@ vpa_retro_sel_update = function(dat, retro_year = 5) {
   res0_step1 =  res1.pgs #YK added (retro.est3(res0_step1, n = retro_year) でエラー: オブジェクト 'res0_step1' がありません )
   res0_step2 = res_vpa2019
   res0_step2$input$dat = dat
-  res0_step2$input$tf.year = 2016:2017 #year
+  # res0_step2$input$tf.year = 2016:2017 #year これもミス?
+  res0_step2$input$tf.year = 2015:2017 #year
   res0_step2$input$sel.f = NULL
   res0_step2$input$sel.update = TRUE
   res0_step2 = do.call(vpa, res0_step2$input)
