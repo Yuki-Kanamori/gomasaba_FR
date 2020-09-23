@@ -1,10 +1,11 @@
 # require(devtools)
 # devtools::install_github("ichimomo/frasyr") 
-# require(frasyr)
+require(frasyr)
 require(tidyverse)
 require(gridExtra)
 
-setwd("~/Dropbox/saVAST_egg/rvpa/re-analysis")
+# setwd("~/Dropbox/saVAST_egg/rvpa/re-analysis")
+setwd("C:/Users/00007802/Documents/rvpa")
 source("original-function1.0.r", encoding = 'UTF-8')
 source("frasyr_func_vpa.r")
 
@@ -82,30 +83,33 @@ cpue1 = read.csv("cpue_pgs2019_nominal.csv", row.names = 1)
 cpue2 = read.csv("cpue_pgs2019_vast_nochub.csv", row.names = 1)
 cpue3 = read.csv("cpue_pgs2019_vast_chub.csv", row.names = 1)
 
+#チューニングには2019年も使うので除く必要はない…（西嶋）
 #2018年までの資源量を使ってレトロ解析を行うので，2019年のデータを除去しとく
-for(i in 0:3){
-  data = get(paste0("cpue", i))
-  assign(paste0("cpue", i),
-         data[, -ncol(data)])
-}
 
-tag = c("caa", "waa", "maa")
-for(i in tag){
-  data = get(paste0(i))
-  assign(paste0(i),
-         data[, -ncol(data)])
-}
+# for(i in 0:3){
+#   data = get(paste0("cpue", i))
+#   assign(paste0("cpue", i),
+#          data[, -ncol(data)])
+# }
+# 
+# tag = c("caa", "waa", "maa")
+# for(i in tag){
+#   data = get(paste0(i))
+#   assign(paste0(i),
+#          data[, -ncol(data)])
+# }
 
 dat0 = data.handler(caa, waa, maa, cpue0, M = 0.4)
 dat1 = data.handler(caa, waa, maa, cpue1, M = 0.4)
 dat2 = data.handler(caa, waa, maa, cpue2, M = 0.4)
 dat3 = data.handler(caa, waa, maa, cpue3, M = 0.4)
 
+# 除かなくていいのでは？（西嶋）
 # 2005 & 2006 を除く
-dat0$index[2,as.character(2005:2006)] <- NA
-dat1$index[2,as.character(2005:2006)] <- NA
-dat2$index[2,as.character(2005:2006)] <- NA
-dat3$index[2,as.character(2005:2006)] <- NA
+# dat0$index[2,as.character(2005:2006)] <- NA
+# dat1$index[2,as.character(2005:2006)] <- NA
+# dat2$index[2,as.character(2005:2006)] <- NA
+# dat3$index[2,as.character(2005:2006)] <- NA
 
 # 
 # vpa_retro_2step = function(dat, retro_year = 5) {
@@ -146,17 +150,18 @@ dat3$index[2,as.character(2005:2006)] <- NA
 # res_dat3$retro$mohn
 # res_dat3$res$sigma
 # 
-# get_tbl = function(Res, tune = "2steps") {
-#   mohn_var = c("N2","B2","R2","F","SSB2","SSB")
-#   mohns = Res$retro$mohn[mohn_var]
-#   names(mohns) = c("mohn_N","mohn_B","mohn_R","mohn_F","mohn_SSB","mohn_SSB2")
-#   model_tbl = tibble(tune=tune,tune_start = colnames(Res$res$input$dat$index)[!is.na(Res$res$input$dat$index[2,])][1]) %>%
-#     mutate(term_f = Res$res$term.f, R2018 = Res$res$naa[1,"2018"],B2018 = colSums(Res$res$baa)["2018"]/1000,
-#            SSB2018 = colSums(Res$res$ssb)["2018"]/1000,SSB2019 = colSums(Res$res$ssb)["2019"]/1000,sigma = mean(Res$res$sigma))
-#   mohn_tbl = tibble(mohn = mohns,var=names(mohn)) %>% spread(key=var,value=mohn)
-#   return(bind_cols(model_tbl, mohn_tbl))
-# }
-# 
+get_tbl = function(Res, tune = "2steps") {
+  # mohn_var = c("N2","B2","R2","F","SSB2","SSB")
+  mohn_var = c("N2","B2","R2","F","SSB2")
+  mohns = Res$retro$mohn[mohn_var]
+  names(mohns) = c("mohn_N","mohn_B","mohn_R","mohn_F","mohn_SSB")
+  model_tbl = tibble(tune=tune,tune_start = colnames(Res$res$input$dat$index)[!is.na(Res$res$input$dat$index[2,])][1]) %>%
+    mutate(term_f = Res$res$term.f, R2018 = Res$res$naa[1,"2018"],B2018 = colSums(Res$res$baa)["2018"]/1000,
+           SSB2018 = colSums(Res$res$ssb)["2018"]/1000,SSB2019 = colSums(Res$res$ssb)["2019"]/1000,sigma = mean(Res$res$sigma))
+  mohn_tbl = tibble(mohn = mohns,var=names(mohn)) %>% spread(key=var,value=mohn)
+  return(bind_cols(model_tbl, mohn_tbl))
+}
+
 # summary_table = bind_rows(get_tbl(res_dat0),get_tbl(res_dat1),get_tbl(res_dat2),get_tbl(res_dat3)) %>%
 #   mutate(Index_type = c("Egg_abundance","Nominal","VAST_noChub","VAST_Chub"))
 # 
@@ -197,91 +202,99 @@ dat3$index[2,as.character(2005:2006)] <- NA
 
 ### sel.update = TRUE ----
 
-vpa_retro_sel_update = function(dat, retro_year = 5) {
-  res0_step1 =  res1.pgs #YK added (retro.est3(res0_step1, n = retro_year) でエラー: オブジェクト 'res0_step1' がありません )
+vpa_retro_sel_update = function(dat, retro_year = 5, tf.year=2013:2017) {
+  # res0_step1 =  res1.pgs #YK added (retro.est3(res0_step1, n = retro_year) でエラー: オブジェクト 'res0_step1' がありません )
   res0_step2 = res_vpa2019
   res0_step2$input$dat = dat
   # res0_step2$input$tf.year = 2014:2017 #year
-  res0_step2$input$tf.year = 2013:2017 #year
+  res0_step2$input$tf.year = tf.year #year
   res0_step2$input$sel.f = NULL
   res0_step2$input$sel.update = TRUE
   res0_step2 = do.call(vpa, res0_step2$input)
-  retro_step1 = retro.est3(res0_step1,n=retro_year)
+  # retro_step1 = retro.est3(res0_step1,n=retro_year)
   retro_step2 = retro.est3(res0_step2, n = retro_year, sel.mat = NULL)
   return(list(res=res0_step2, retro = retro_step2))
 }
 
+statname = c("F","N2","B2","SSB2","R2")
+
 #raw
 res_dat0 = vpa_retro_sel_update(dat0)
 colSums(res_dat0$res$ssb)
-res_dat0$retro$mohn
+res_dat0$retro$mohn #
+res_dat0$retro$mohn[statname] #
 res_dat0$res$sigma
+res_dat0$res$naa
 
 #nominal
 res_dat1 = vpa_retro_sel_update(dat1)
 colSums(res_dat1$res$ssb)
-res_dat1$retro$mohn
+res_dat1$retro$mohn[statname]
 res_dat1$res$sigma
 
 #chub-
 res_dat2 = vpa_retro_sel_update(dat2)
 colSums(res_dat2$res$ssb)
-res_dat2$retro$mohn
+res_dat2$retro$mohn[statname]
 res_dat2$res$sigma
+# res_dat2$res$input$plot.year
 
 #chub+
 res_dat3 = vpa_retro_sel_update(dat3)
 colSums(res_dat2$res$ssb)
-res_dat3$retro$mohn
+res_dat3$retro$mohn[statname]
 res_dat3$res$sigma
 
 summary_table3 = bind_rows(get_tbl(res_dat0, tune = "sel_update"),
                            get_tbl(res_dat1, tune = "sel_update"),
                            get_tbl(res_dat2, tune = "sel_update"),
                            get_tbl(res_dat3, tune = "sel_update")) %>%
-  mutate(Index_type = c("Egg_abundance","Nominal","VAST_noChub","VAST_Chub"))
+  mutate(Index_type = c("Egg_abundance","Nominal","VAST_noChub","VAST_Chub"),
+         tf_year="2013-2017")
 
-summary_table = bind_rows(summary_table, summary_table3)
+summary_table = summary_table3
+
+# summary_table = bind_rows(summary_table, summary_table3)
 
 summary_table = summary_table %>% mutate(
   sel_def = "max"
 )
 
 #参照年を変更
-vpa_retro_sel_update = function(dat, retro_year = 5) {
-  res0_step1 =  res1.pgs #YK added (retro.est3(res0_step1, n = retro_year) でエラー: オブジェクト 'res0_step1' がありません )
-  res0_step2 = res_vpa2019
-  res0_step2$input$dat = dat
-  # res0_step2$input$tf.year = 2016:2017 #year これもミス?
-  res0_step2$input$tf.year = 2015:2017 #year
-  res0_step2$input$sel.f = NULL
-  res0_step2$input$sel.update = TRUE
-  res0_step2 = do.call(vpa, res0_step2$input)
-  retro_step1 = retro.est3(res0_step1,n=retro_year)
-  retro_step2 = retro.est3(res0_step2, n = retro_year, sel.mat = NULL)
-  return(list(res=res0_step2, retro = retro_step2))
-}
+# vpa_retro_sel_update = function(dat, retro_year = 5) {
+#   res0_step1 =  res1.pgs #YK added (retro.est3(res0_step1, n = retro_year) でエラー: オブジェクト 'res0_step1' がありません )
+#   res0_step2 = res_vpa2019
+#   res0_step2$input$dat = dat
+#   # res0_step2$input$tf.year = 2016:2017 #year これもミス?
+#   res0_step2$input$tf.year = 2015:2017 #year
+#   res0_step2$input$sel.f = NULL
+#   res0_step2$input$sel.update = TRUE
+#   res0_step2 = do.call(vpa, res0_step2$input)
+#   retro_step1 = retro.est3(res0_step1,n=retro_year)
+#   retro_step2 = retro.est3(res0_step2, n = retro_year, sel.mat = NULL)
+#   return(list(res=res0_step2, retro = retro_step2))
+# }
 
 #raw
-res_dat0 = vpa_retro_sel_update(dat0)
+res_dat0 = vpa_retro_sel_update(dat0,tf.year=2015:2017)
 colSums(res_dat0$res$ssb)
 res_dat0$retro$mohn
 res_dat0$res$sigma
 
 #nominal
-res_dat1 = vpa_retro_sel_update(dat1)
+res_dat1 = vpa_retro_sel_update(dat1,tf.year=2015:2017)
 colSums(res_dat1$res$ssb)
 res_dat1$retro$mohn
 res_dat1$res$sigma
 
 #chub-
-res_dat2 = vpa_retro_sel_update(dat2)
+res_dat2 = vpa_retro_sel_update(dat2,tf.year=2015:2017)
 colSums(res_dat2$res$ssb)
 res_dat2$retro$mohn
 res_dat2$res$sigma
 
 #chub+
-res_dat3 = vpa_retro_sel_update(dat3)
+res_dat3 = vpa_retro_sel_update(dat3,tf.year=2015:2017)
 colSums(res_dat2$res$ssb)
 res_dat3$retro$mohn
 res_dat3$res$sigma
@@ -290,7 +303,8 @@ summary_table4 = bind_rows(get_tbl(res_dat0, tune = "sel_update"),
                            get_tbl(res_dat1, tune = "sel_update"),
                            get_tbl(res_dat2, tune = "sel_update"),
                            get_tbl(res_dat3, tune = "sel_update")) %>%
-  mutate(Index_type = c("Egg_abundance","Nominal","VAST_noChub","VAST_Chub"))
+  mutate(Index_type = c("Egg_abundance","Nominal","VAST_noChub","VAST_Chub"),
+         tf_year = "2015-2017")
 
 summary_table = bind_rows(summary_table, summary_table4)
 
