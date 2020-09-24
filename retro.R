@@ -1,5 +1,5 @@
 # require(devtools)
-# devtools::install_github("ichimomo/frasyr")
+# devtools::install_github("ichimomo/frasyr@v2.01") #version 2.01をインストールする
 require(frasyr)
 require(tidyverse)
 require(gridExtra)
@@ -257,7 +257,6 @@ res_vpa = res_dat3$res
 save(res_vpa,file="res_vpa_Chub.rda")
 
 
-
 summary_table3 = bind_rows(get_tbl(res_dat0, tune = "sel_update"),
                            get_tbl(res_dat1, tune = "sel_update"),
                            get_tbl(res_dat2, tune = "sel_update"),
@@ -327,13 +326,6 @@ summary_table = bind_rows(summary_table3, summary_table4)
 #   sel_def = "max"
 # )
 write.csv(summary_table, "summary_table.csv")
-
-
-
-
-
-
-
 
 
 # fig -----------------------------------------------------------
@@ -747,3 +739,18 @@ colSums(base0$ssb)
 View(summary_table)
 
 write.csv(summary_table, file = "pgm_summary.csv")
+
+
+## ABC 計算 ----
+ABC = c()
+vpaname_ = c("raw","nominal","noChub","Chub")
+
+for (i in 1:4) {
+  source("~/git/gomasaba_FR/1do_MSYest.r", encoding="UTF-8",echo=TRUE)
+}
+
+names(ABC) <- vpaname_
+as.data.frame(ABC)
+
+write.csv(as.data.frame(ABC),file="~/git/gomasaba_FR/ABC.csv",row.names=TRUE)
+
