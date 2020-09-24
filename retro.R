@@ -199,7 +199,7 @@ get_tbl = function(Res, tune = "2steps") {
 ### sel.update = TRUE ----
 
 vpa_retro_sel_update = function(dat, retro_year = 5) {
-  res0_step1 =  res1.pgs #YK added (retro.est3(res0_step1, n = retro_year) でエラー: オブジェクト 'res0_step1' がありません )
+  # res0_step1 =  res1.pgs #YK added (retro.est3(res0_step1, n = retro_year) でエラー: オブジェクト 'res0_step1' がありません )
   res0_step2 = res_vpa2019
   res0_step2$input$dat = dat
   # res0_step2$input$tf.year = 2014:2017 #year
@@ -207,7 +207,7 @@ vpa_retro_sel_update = function(dat, retro_year = 5) {
   res0_step2$input$sel.f = NULL
   res0_step2$input$sel.update = TRUE
   res0_step2 = do.call(vpa, res0_step2$input)
-  retro_step1 = retro.est3(res0_step1,n=retro_year)
+  # retro_step1 = retro.est3(res0_step1,n=retro_year)
   retro_step2 = retro.est3(res0_step2, n = retro_year, sel.mat = NULL)
   return(list(res=res0_step2, retro = retro_step2))
 }
@@ -316,58 +316,58 @@ for(j in 1:5){
   
   df0 = data_frame(colSums(data$res$wcaa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "wcaa", index = "Nominal")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "wcaa", index = "Nominal")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$naa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "naa", index = "Nominal")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "naa", index = "Nominal")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$faa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "faa", index = "Nominal")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "faa", index = "Nominal")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$baa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "baa", index = "Nominal")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "baa", index = "Nominal")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$ssb))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "ssb", index = "Nominal")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "ssb", index = "Nominal")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$saa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "saa", index = "Nominal")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "saa", index = "Nominal")
   DF0 = rbind(DF0, df0)
   
   df1 = data_frame(colSums(data$retro$Res[[j]]$wcaa))
   colnames(df1) = "value"
-  df1 = df1 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "wcaa", index = "Nominal")
+  df1 = df1 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "wcaa", index = "Nominal")
   DF1 = rbind(DF1, df1)
   
   
   df2 = data_frame(colSums(data$retro$Res[[j]]$naa))
   colnames(df2) = "value"
-  df2 = df2 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "naa", index = "Nominal")
+  df2 = df2 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "naa", index = "Nominal")
   DF2 = rbind(DF2, df2)
   
   df3 = data_frame(colSums(data$retro$Res[[j]]$faa))
   colnames(df3) = "value"
-  df3 = df3 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "faa", index = "Nominal")
+  df3 = df3 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "faa", index = "Nominal")
   DF3 = rbind(DF3, df3)
   
   df4 = data_frame(colSums(data$retro$Res[[j]]$baa))
   colnames(df4) = "value"
-  df4 = df4 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "baa", index = "Nominal")
+  df4 = df4 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "baa", index = "Nominal")
   DF4 = rbind(DF4, df4)
   
   df5 = data_frame(colSums(data$retro$Res[[j]]$ssb))
   colnames(df5) = "value"
-  df5 = df5 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "ssb", index = "Nominal")
+  df5 = df5 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "ssb", index = "Nominal")
   DF5 = rbind(DF5, df5)
   
   df6 = data_frame(colSums(data$retro$Res[[j]]$saa))
   colnames(df6) = "value"
-  df6 = df6 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "saa", index = "Nominal")
+  df6 = df6 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "saa", index = "Nominal")
   DF6 = rbind(DF6, df6)
 }
 retro_dat0_0 = DF0
@@ -384,62 +384,62 @@ for(j in 1:5){
   
   df0 = data_frame(colSums(data$res$wcaa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "wcaa", index = "Chub-")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "wcaa", index = "Chub-")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$naa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "naa", index = "Chub-")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "naa", index = "Chub-")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$faa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "faa", index = "Chub-")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "faa", index = "Chub-")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$baa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "baa", index = "Chub-")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "baa", index = "Chub-")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$ssb))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "ssb", index = "Chub-")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "ssb", index = "Chub-")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$saa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "saa", index = "Chub-")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "saa", index = "Chub-")
   DF0 = rbind(DF0, df0)
   
   df1 = data_frame(colSums(data$retro$Res[[j]]$wcaa))
   colnames(df1) = "value"
-  df1 = df1 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "wcaa", index = "Chub-")
+  df1 = df1 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "wcaa", index = "Chub-")
   DF1 = rbind(DF1, df1)
   
   df1 = data_frame(colSums(data$retro$Res[[j]]$wcaa))
   colnames(df1) = "value"
-  df1 = df1 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "wcaa", index = "Chub-")
+  df1 = df1 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "wcaa", index = "Chub-")
   DF1 = rbind(DF1, df1)
   
   df2 = data_frame(colSums(data$retro$Res[[j]]$naa))
   colnames(df2) = "value"
-  df2 = df2 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "naa", index = "Chub-")
+  df2 = df2 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "naa", index = "Chub-")
   DF2 = rbind(DF2, df2)
   
   df3 = data_frame(colSums(data$retro$Res[[j]]$faa))
   colnames(df3) = "value"
-  df3 = df3 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "faa", index = "Chub-")
+  df3 = df3 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "faa", index = "Chub-")
   DF3 = rbind(DF3, df3)
   
   df4 = data_frame(colSums(data$retro$Res[[j]]$baa))
   colnames(df4) = "value"
-  df4 = df4 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "baa", index = "Chub-")
+  df4 = df4 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "baa", index = "Chub-")
   DF4 = rbind(DF4, df4)
   
   df5 = data_frame(colSums(data$retro$Res[[j]]$ssb))
   colnames(df5) = "value"
-  df5 = df5 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "ssb", index = "Chub-")
+  df5 = df5 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "ssb", index = "Chub-")
   DF5 = rbind(DF5, df5)
   
   df6 = data_frame(colSums(data$retro$Res[[j]]$saa))
   colnames(df6) = "value"
-  df6 = df6 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "saa", index = "Chub-")
+  df6 = df6 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "saa", index = "Chub-")
   DF6 = rbind(DF6, df6)
 }
 retro_dat2_0 = DF0
@@ -456,57 +456,57 @@ for(j in 1:5){
   
   df0 = data_frame(colSums(data$res$wcaa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "wcaa", index = "Chub+")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "wcaa", index = "Chub+")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$naa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "naa", index = "Chub+")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "naa", index = "Chub+")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$faa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "faa", index = "Chub+")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "faa", index = "Chub+")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$baa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "baa", index = "Chub+")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "baa", index = "Chub+")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$ssb))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "ssb", index = "Chub+")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "ssb", index = "Chub+")
   DF0 = rbind(DF0, df0)
   df0 = data_frame(colSums(data$res$saa))
   colnames(df0) = "value"
-  df0 = df0 %>% mutate(year = rep(1995:2018), ret_yr = 0, type = "saa", index = "Chub+")
+  df0 = df0 %>% mutate(year = rep(1995:2019), ret_yr = 0, type = "saa", index = "Chub+")
   DF0 = rbind(DF0, df0)
   
   df1 = data_frame(colSums(data$retro$Res[[j]]$wcaa))
   colnames(df1) = "value"
-  df1 = df1 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "wcaa", index = "Chub+")
+  df1 = df1 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "wcaa", index = "Chub+")
   DF1 = rbind(DF1, df1)
   
   df2 = data_frame(colSums(data$retro$Res[[j]]$naa))
   colnames(df2) = "value"
-  df2 = df2 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "naa", index = "Chub+")
+  df2 = df2 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "naa", index = "Chub+")
   DF2 = rbind(DF2, df2)
   
   df3 = data_frame(colSums(data$retro$Res[[j]]$faa))
   colnames(df3) = "value"
-  df3 = df3 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "faa", index = "Chub+")
+  df3 = df3 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "faa", index = "Chub+")
   DF3 = rbind(DF3, df3)
   
   df4 = data_frame(colSums(data$retro$Res[[j]]$baa))
   colnames(df4) = "value"
-  df4 = df4 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "baa", index = "Chub+")
+  df4 = df4 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "baa", index = "Chub+")
   DF4 = rbind(DF4, df4)
   
   df5 = data_frame(colSums(data$retro$Res[[j]]$ssb))
   colnames(df5) = "value"
-  df5 = df5 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "ssb", index = "Chub+")
+  df5 = df5 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "ssb", index = "Chub+")
   DF5 = rbind(DF5, df5)
   
   df6 = data_frame(colSums(data$retro$Res[[j]]$saa))
   colnames(df6) = "value"
-  df6 = df6 %>% mutate(year = rep(1995:(2018-j)), ret_yr = paste0(j), type = "saa", index = "Chub+")
+  df6 = df6 %>% mutate(year = rep(1995:(2019-j)), ret_yr = paste0(j), type = "saa", index = "Chub+")
   DF6 = rbind(DF6, df6)
 }
 retro_dat3_0 = DF0
@@ -544,7 +544,7 @@ pd = position_dodge(.3)
 p = geom_point(position = pd)
 l = geom_line()
 f = facet_grid(type ~ index, scales = "free")
-lb = labs(x = "Year", y = "", color = NULL, title = "")
+lb = labs(x = "Year", y = "", color = "Removed year", title = "")
 th = theme(#legend.position = c(0.18, 0.8),
   #legend.position = c(0.7, 0.9),
   legend.key = element_blank(),
@@ -557,7 +557,7 @@ th = theme(#legend.position = c(0.18, 0.8),
   legend.text = element_text(size = rel(1.5)),
   strip.text = element_text(size = rel(1.3)), #ファセットのタイトル
   plot.title = element_text(size = rel(1.5))) #タイトル
-g+p+l+f+lb+theme_bw()+th+scale_x_continuous(breaks = seq(1995, 2018, 5))+scale_colour_manual(values = cbPalette)
+g+p+l+f+theme_bw()+th+lb+scale_x_continuous(breaks = seq(1995, 2018, 5))+scale_colour_manual(values = cbPalette)
 
 
 
