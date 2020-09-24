@@ -524,6 +524,8 @@ retro = rbind(retro_wcaa_dat0, retro_wcaa_dat2, retro_wcaa_dat3,
               retro_ssb_dat0, retro_ssb_dat2, retro_ssb_dat3,
               retro_saa_dat0, retro_saa_dat2, retro_saa_dat3,
               retro_dat0_0, retro_dat2_0, retro_dat3_0)
+summary(retro)
+unique(retro$ret_yr)
 retro = retro %>% filter(value != 0)
 head(retro)
 
@@ -531,11 +533,16 @@ retro$index = factor(retro$index, levels = c("Nominal", "Chub-", "Chub+"))
 retro$type = ifelse(retro$type == "wcaa", "WCAA", ifelse(retro$type == "naa", "Numbers", ifelse(retro$type == "faa", "FAA", ifelse(retro$type == "baa", "Biomass", ifelse(retro$type == "ssb", "SSB", "SAA")))))
 write.csv(retro, "retro_13-17.csv")
 
+# なぜか2019年が入ってしまう
 select = c("Biomass", "Numbers", "SSB")
 fig_retro = retro %>% filter(type %in% select) 
+
+fig_retro = retro %>% filter(type != "WCAA") %>% filter(type != "FAA") %>% filter(type != "SAA")
+
 unique(fig_retro$type)
 levels(fig_retro$type)
 fig_retro$type = factor(fig_retro$type, levels = c("Numbers", "Biomass", "SSB"))
+summary(fig_retro)
 
 g = ggplot(fig_retro, aes(x = year, y = value, colour = as.factor(ret_yr)))
 cbPalette = c("gray50", "blue", "cyan", "green", "orange", "red")
