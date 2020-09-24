@@ -220,15 +220,15 @@ for(i in 1:3){
   if(i == 2){ # Chub-
     for(j in 1:retro_year){
       n0 = data_frame(value = colSums(data$res$naa)) %>% mutate(year = rep(start:end), ret_yr = 0, index = "Chub-") %>% filter(year != end) %>% filter(year != end)
-      n_ret = data_frame(value = colSums(data$retro$Res[[j]]$naa)) %>% mutate(year = rep(start:(end-j)), ret_yr = paste(j), index = "Nominal") %>% filter(year != (end-j))
+      n_ret = data_frame(value = colSums(data$retro$Res[[j]]$naa)) %>% mutate(year = rep(start:(end-j)), ret_yr = paste(j), index = "Chub-") %>% filter(year != (end-j))
       N2 = rbind(N2, n_ret)
       
       b0 = data_frame(value = colSums(data$res$baa)) %>% mutate(year = rep(start:end), ret_yr = 0, index = "Chub-") %>% filter(year != end) %>% filter(year != end)
-      b_ret = data_frame(value = colSums(data$retro$Res[[j]]$baa)) %>% mutate(year = rep(start:(end-j)), ret_yr = paste(j), index = "Nominal") %>% filter(year != (end-j))
+      b_ret = data_frame(value = colSums(data$retro$Res[[j]]$baa)) %>% mutate(year = rep(start:(end-j)), ret_yr = paste(j), index = "Chub-") %>% filter(year != (end-j))
       B2 = rbind(B2, b_ret)
       
       s0 = data_frame(value = colSums(data$res$ssb)) %>% mutate(year = rep(start:end), ret_yr = 0, index = "Chub-") %>% filter(year != end) %>% filter(year != end)
-      s_ret = data_frame(value = colSums(data$retro$Res[[j]]$ssb)) %>% mutate(year = rep(start:(end-j)), ret_yr = paste(j), index = "Nominal") %>% filter(year != (end-j))
+      s_ret = data_frame(value = colSums(data$retro$Res[[j]]$ssb)) %>% mutate(year = rep(start:(end-j)), ret_yr = paste(j), index = "Chub-") %>% filter(year != (end-j))
       S2 = rbind(S2, s_ret)
     }
     
@@ -240,15 +240,15 @@ for(i in 1:3){
   if(i == 3){ # Chub+
     for(j in 1:retro_year){
       n0 = data_frame(value = colSums(data$res$naa)) %>% mutate(year = rep(start:end), ret_yr = 0, index = "Chub+") %>% filter(year != end) %>% filter(year != end)
-      n_ret = data_frame(value = colSums(data$retro$Res[[j]]$naa)) %>% mutate(year = rep(start:(end-j)), ret_yr = paste(j), index = "Nominal") %>% filter(year != (end-j))
+      n_ret = data_frame(value = colSums(data$retro$Res[[j]]$naa)) %>% mutate(year = rep(start:(end-j)), ret_yr = paste(j), index = "Chub+") %>% filter(year != (end-j))
       N3 = rbind(N3, n_ret)
       
       b0 = data_frame(value = colSums(data$res$baa)) %>% mutate(year = rep(start:end), ret_yr = 0, index = "Chub+") %>% filter(year != end) %>% filter(year != end)
-      b_ret = data_frame(value = colSums(data$retro$Res[[j]]$baa)) %>% mutate(year = rep(start:(end-j)), ret_yr = paste(j), index = "Nominal") %>% filter(year != (end-j))
+      b_ret = data_frame(value = colSums(data$retro$Res[[j]]$baa)) %>% mutate(year = rep(start:(end-j)), ret_yr = paste(j), index = "Chub+") %>% filter(year != (end-j))
       B3 = rbind(B3, b_ret)
       
       s0 = data_frame(value = colSums(data$res$ssb)) %>% mutate(year = rep(start:end), ret_yr = 0, index = "Chub+") %>% filter(year != end) %>% filter(year != end)
-      s_ret = data_frame(value = colSums(data$retro$Res[[j]]$ssb)) %>% mutate(year = rep(start:(end-j)), ret_yr = paste(j), index = "Nominal") %>% filter(year != (end-j))
+      s_ret = data_frame(value = colSums(data$retro$Res[[j]]$ssb)) %>% mutate(year = rep(start:(end-j)), ret_yr = paste(j), index = "Chub+") %>% filter(year != (end-j))
       S3 = rbind(S3, s_ret)
     }
     
@@ -264,10 +264,10 @@ for(i in 1:3){
 
 retro$index = factor(retro$index, levels = c("Nominal", "Chub-", "Chub+"))
 retro$type = factor(retro$type, levels = c("Numbers", "Biomass", "SSB"))
+levels(retro$index)
+levels(retro$type)
 write.csv(retro, "retro_13-17.csv")
 
-levels(fig_retro$type)
-summary(retro)
 
 g = ggplot(retro, aes(x = year, y = value, colour = as.factor(ret_yr)))
 cbPalette = c("gray50", "blue", "cyan", "green", "orange", "red")
