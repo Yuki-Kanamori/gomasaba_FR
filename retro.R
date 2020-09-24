@@ -184,15 +184,12 @@ write.csv(summary_table, "summary_table.csv")
 # fig. 4 --------------------------------------------------------
 start = 1995
 end = 2019
-N1 = NULL
-B1 = NULL
-S1 = NULL
-N2 = NULL
-B2 = NULL
-S2 = NULL
-N3 = NULL
-B3 = NULL
-S3 = NULL
+for(i in c("N", "B", "S")){
+  for(j in 1:3){
+    assign(paste0(i, j),
+           NULL)
+  }
+}
 
 for(i in 1:3){
   data = get(paste0("res_dat", i, "1"))
